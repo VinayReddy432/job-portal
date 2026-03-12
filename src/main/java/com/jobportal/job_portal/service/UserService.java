@@ -38,4 +38,13 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
+    public User loginUser(String email,String password){
+        User user=userRepository.findByEmail(email)
+                .orElseThrow(()->new RuntimeException("User not found"));
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw new RuntimeException("invalid password");
+        }
+         return user;
+    }
 }

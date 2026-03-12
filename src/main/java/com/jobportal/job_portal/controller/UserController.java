@@ -1,6 +1,7 @@
 package com.jobportal.job_portal.controller;
 
 
+import com.jobportal.job_portal.dto.LoginRequest;
 import com.jobportal.job_portal.entity.User;
 import com.jobportal.job_portal.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,19 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest){
+        User user=userService.loginUser(
+                loginRequest.getEmail(),
+                loginRequest.getPassword()
+        );
+        return  ResponseEntity.ok("login Successfull ! welcome "+user.getName());
+    }
+
     // automatically injects UserService here
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+
 }
