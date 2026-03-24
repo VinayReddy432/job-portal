@@ -3,6 +3,7 @@ package com.jobportal.job_portal.service;
 
 import com.jobportal.job_portal.entity.Job;
 import com.jobportal.job_portal.entity.User;
+import com.jobportal.job_portal.exception.ResourceNotFoundException;
 import com.jobportal.job_portal.repository.JobRepository;
 import com.jobportal.job_portal.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class JobService {
     }
     public Job createJob(Job job,String email){
         User user=userRepository.findByEmail(email)
-                .orElseThrow(()->new RuntimeException("User not found"));
+                .orElseThrow(()->new ResourceNotFoundException("User not found"));
         job.setPostedBy(user);
         return  jobRepository.save(job);
     }
@@ -36,7 +37,7 @@ public class JobService {
 
     public Job updateJob(Long id, Job updatedJob, String email) {
         Job job = jobRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
         job.setTitle(updatedJob.getTitle());
         job.setCompany(updatedJob.getCompany());
         job.setLocation(updatedJob.getLocation());

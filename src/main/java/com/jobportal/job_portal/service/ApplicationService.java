@@ -4,6 +4,7 @@ import com.jobportal.job_portal.entity.Application;
 import com.jobportal.job_portal.entity.ApplicationStatus;
 import com.jobportal.job_portal.entity.Job;
 import com.jobportal.job_portal.entity.User;
+import com.jobportal.job_portal.exception.ResourceNotFoundException;
 import com.jobportal.job_portal.repository.ApplicationRepository;
 import com.jobportal.job_portal.repository.JobRepository;
 import com.jobportal.job_portal.repository.UserRepository;
@@ -28,9 +29,9 @@ public class ApplicationService {
 
     public Application apply(Long jobId,String email){
         User candidate=userRepository.findByEmail(email)
-                .orElseThrow(()->new RuntimeException("user not found"));
+                .orElseThrow(()->new ResourceNotFoundException("user not found"));
         Job job=jobRepository.findById(jobId)
-                .orElseThrow(()->new RuntimeException("Job not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Job not found"));
         Application application=new Application();
         application.setCandidate(candidate);
         application.setJob(job);
@@ -48,7 +49,7 @@ public class ApplicationService {
 
     public Application updateStatus(Long applicationId, ApplicationStatus status) {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new RuntimeException("Application not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Application not found"));
         application.setStatus(status);
         return applicationRepository.save(application);
     }

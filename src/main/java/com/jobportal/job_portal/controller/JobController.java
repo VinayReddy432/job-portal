@@ -1,6 +1,7 @@
 package com.jobportal.job_portal.controller;
 
 import com.jobportal.job_portal.entity.Job;
+import com.jobportal.job_portal.exception.ResourceNotFoundException;
 import com.jobportal.job_portal.service.JobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,10 @@ public class JobController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> getJobById(@PathVariable Long id){
-        return jobService.getJobById(id)
-                .map(job -> ResponseEntity.ok(job))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Job> getJobById(@PathVariable Long id) {
+        Job job = jobService.getJobById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
+        return ResponseEntity.ok(job);
     }
 
     @PutMapping("/{id}")
