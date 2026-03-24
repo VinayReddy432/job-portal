@@ -54,4 +54,13 @@ public class JobController {
         jobService.deleteJob(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Job>>searchJobs(
+            @RequestParam(required = false)String keyword,
+            @RequestParam(required = false)String location) {
+        return ResponseEntity.ok(jobService.searchJobs(keyword, location));
+    }
+
+
 }

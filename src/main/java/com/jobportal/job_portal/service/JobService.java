@@ -50,5 +50,8 @@ public class JobService {
     public void deleteJob(Long id) {
         jobRepository.deleteById(id);
     }
+    public List<Job> searchJobs(String keyword,String location){
+        return jobRepository.searchJobs(keyword,location);
+    }
 
 }
